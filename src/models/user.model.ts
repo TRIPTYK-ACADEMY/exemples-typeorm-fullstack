@@ -17,4 +17,11 @@ export class User extends BaseModel {
 
     @OneToMany(() => Article, (article) => article.author)
     public articles?: Article[];
+
+    /**
+     * Propriété dite "virtuelle", car elle n'est pas en DB
+     */
+    get fullName() {
+        return `${this.firstName} ${this.lastName}`;
+    }
 }
