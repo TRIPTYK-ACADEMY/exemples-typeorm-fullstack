@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
 import { createConnection } from "typeorm";
+import { Article } from "./models/article.model";
+import { Category } from "./models/category.model";
+import { User } from "./models/user.model";
 
 async function initApp() {
     try {
@@ -10,7 +13,9 @@ async function initApp() {
             host: "localhost",
             port: 3306,
             database: "fullstack_example",
-            synchronize: true
+            synchronize: true,
+            entities: [Article, User, Category]
+            // OU ./src/models/*.ts (si vous en avez bcp)
         });
 
         // const result = await connexion.query("SHOW DATABASES;");
