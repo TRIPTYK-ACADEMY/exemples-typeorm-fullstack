@@ -32,9 +32,10 @@ export async function updateEntityRaw(id: number) {
     const userRepository = getRepository(User);
 
     // fais une UPDATE mysql, mais sans déclencher les méthodes magiques de TypeORM comme les triggers, les colonnes d'update automatiques etc ...
-    const updatedUser = await userRepository.update(id, {
+    const updatedUserInfos = await userRepository.update(id, {
         firstName: "Polo"
     });
+    // ne renvoie pas l'objet , mais un résultat d'UPDATE
 
-    console.log(updatedUser);
+    console.log(updatedUserInfos);
 }
