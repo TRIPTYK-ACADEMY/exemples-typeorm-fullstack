@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { AfterLoad, BeforeInsert, BeforeRemove, BeforeUpdate, Column, Entity, OneToMany } from "typeorm";
 import { Article } from "./article.model";
 import { BaseModel } from "./base.model";
 
@@ -17,6 +17,19 @@ export class User extends BaseModel {
 
     @OneToMany(() => Article, (article) => article.author)
     public articles?: Article[];
+
+    @AfterLoad()
+    public afterTheLoad() {
+        console.log("j'ai été créé", this);
+    }
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    @BeforeRemove()
+    public beforeTheInsert() {
+        this.firstName += " aime Amaury";
+        console.log("Avant insertion : ", this);
+    }
 
     /**
      * Propriété dite "virtuelle", car elle n'est pas en DB
