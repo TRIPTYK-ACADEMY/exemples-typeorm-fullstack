@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { createConnection, getCustomRepository, getRepository } from "typeorm";
+import { UserSubscriber } from "./listeners/user.listener";
 import { Article } from "./models/article.model";
 import { Category } from "./models/category.model";
 import { User } from "./models/user.model";
@@ -16,7 +17,8 @@ async function initApp() {
             name: "default",
             database: "fullstack_example",
             synchronize: true,
-            entities: [Article, User, Category]
+            entities: [Article, User, Category],
+            subscribers : [UserSubscriber]
             // OU ./src/models/*.ts (si vous en avez bcp)
         });
 
