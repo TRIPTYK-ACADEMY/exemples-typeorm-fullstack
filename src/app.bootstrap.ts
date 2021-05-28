@@ -20,34 +20,8 @@ async function initApp() {
             subscribers : [UserSubscriber]
             // OU ./src/models/*.ts (si vous en avez bcp)
         });
-
-        const queryBuilder = getRepository(User).createQueryBuilder("users");
-        // dit au queryBuilder que c'est un queryBuilder de sélection (SELECT)
-        const users = queryBuilder
-            .select([])
-            .addSelect([
-                "users.id",
-                "users.updateDate",
-                "user_articles.id",
-                "users.deletionDate"
-            ])
-            .leftJoinAndSelect("users.articles", "user_articles")
-            .where("user_articles.author = :id", {
-                // :id sera remplacé par la clé de l'objet :id qu'on lui passe en paramètres
-                id: 3
-            })
-            .orderBy("users.updateDate", "ASC");
         
-        users.printSql();
-
-
-        // for (const user of users) {
-        //     console.log(`L'utilisateur ${user.fullName} a écrit`, user.articles?.map((e) => e.title).join(" "));
-        // }
-
-
-            
-        // const users = await getRepository(User).find();
+        
 
         console.log("Base de donnée connectée avec succès");
     } catch (e) {
