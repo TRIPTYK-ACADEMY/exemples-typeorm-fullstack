@@ -20,8 +20,6 @@ async function initApp() {
             subscribers : [UserSubscriber]
             // OU ./src/models/*.ts (si vous en avez bcp)
         });
-        
-        
 
         console.log("Base de donnée connectée avec succès");
     } catch (e) {
