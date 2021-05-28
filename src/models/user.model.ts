@@ -20,7 +20,7 @@ export class User extends BaseModel {
 
     @AfterLoad()
     public afterTheLoad() {
-        console.log("j'ai été créé", this);
+        // console.log("j'ai été créé", this);
     }
 
     @BeforeInsert()

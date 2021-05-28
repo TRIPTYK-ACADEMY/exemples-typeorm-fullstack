@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
-import { createConnection, getCustomRepository, getRepository } from "typeorm";
+import { createConnection, getRepository } from "typeorm";
 import { UserSubscriber } from "./listeners/user.listener";
 import { Article } from "./models/article.model";
 import { Category } from "./models/category.model";
 import { User } from "./models/user.model";
-import { ArticleRepository } from "./repositories/article.repository";
 
 async function initApp() {
     try {
@@ -22,21 +21,32 @@ async function initApp() {
             // OU ./src/models/*.ts (si vous en avez bcp)
         });
 
-        await getCustomRepository(ArticleRepository).exists(1);
+        const queryBuilder = getRepository(User).createQueryBuilder("users");
+        // dit au queryBuilder que c'est un queryBuilder de sélection (SELECT)
+        const users = queryBuilder
+            .select([])
+            .addSelect([
+                "users.id",
+                "users.updateDate",
+                "user_articles.id",
+                "users.deletionDate"
+            ])
+            .leftJoinAndSelect("users.articles", "user_articles")
+            .where("user_articles.author = :id", {
+                // :id sera remplacé par la clé de l'objet :id qu'on lui passe en paramètres
+                id: 3
+            })
+            .orderBy("users.updateDate", "ASC");
+        
+        users.printSql();
 
 
-        const newUser = getRepository(Category).create(
-            {
-                name : "La guerre des clones"
-            }
-        );
+        // for (const user of users) {
+        //     console.log(`L'utilisateur ${user.fullName} a écrit`, user.articles?.map((e) => e.title).join(" "));
+        // }
 
-        try {
-            await getRepository(Category).save(newUser);
-        }catch(e) {
-            console.log("Une erreur est survenue dans la sauvegarde : ", e);
-        }
 
+            
         // const users = await getRepository(User).find();
 
         console.log("Base de donnée connectée avec succès");
